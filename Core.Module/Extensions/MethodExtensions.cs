@@ -9,9 +9,9 @@ namespace Core.Module.Extensions
     {
         public static string ResolveEntityMethodHandlerDefinition(this IMethodSymbol method, string rootType, string rootName)
         {
-            var parameters = new[]{$"{rootType} {rootName}"}.Concat(method.Parameters.Select(p => $"{p.Type} {p.Name}"));
+            var parameters = new[]{$"{rootType} {rootName}"}.Concat(method.Parameters.Select(p => $"{(p.RefKind == RefKind.Ref ? "ref " : string.Empty)}{p.Type} {p.Name}"));
 
-            var arguments = method.Parameters.Select(p => $"{p.Name}");
+            var arguments = method.Parameters.Select(p => $"{(p.RefKind == RefKind.Ref ? "ref " : string.Empty)}{p.Name}");
 
             var attributes = method.GetAttributes().SelectMany(a => ResolveAttribute(a));
 
